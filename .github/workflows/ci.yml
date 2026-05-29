@@ -3,7 +3,7 @@ name: DoorDash_part1
 on:
   push:
     branches: 
-     - ["main"]
+     - [ "main" ]
     paths:
       - "app/**"
   workflow_dispatch:
