@@ -33,15 +33,19 @@ jobs:
               exit 0
             fi
             echo "API not ready yet, retrying in 3s..."
-            sleep 3
+            sleep 5
           done
           echo "API failed to start ❌"
           docker logs fee-service || true
           exit 1
 
-      - name : status_endpoint
+      - name : install_test_dependencies
         run : |
-          curl -sSf http://localhost:8080/status/ || exit 1
+          pip install pytest httpx
+
+      - name : run_tests
+        run : |
+          pytest -v
 
       - name: Stop and remove container
         if: always()
