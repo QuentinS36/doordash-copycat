@@ -22,7 +22,7 @@ jobs:
 
       - name: run_docker
         run: |
-          docker run -d -p 8080:8080 doordash/delivery-fee-service
+          docker run -d --name fee-service -p 8080:8080 doordash/delivery-fee-service
 
       - name: Wait for API to be ready
         run: |
