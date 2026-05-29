@@ -24,6 +24,21 @@ jobs:
         run: |
           docker run -d -p 8080:8080 doordash/delivery-fee-service
 
+      - name: Wait for API to be ready
+        run: |
+          echo "Waiting for API to be ready on http://localhost:8080 ..."
+          for i in {1..10}; do
+            if curl -sSf http://localhost:8080/status/ > /dev/null; then
+              echo "API is up ✅"
+              exit 0
+            fi
+            echo "API not ready yet, retrying in 3s..."
+            sleep 3
+          done
+          echo "API failed to start ❌"
+          docker logs fee-service || true
+          exit 1
+
       - name : status_endpoint
         run : |
           curl -sSf http://localhost:8080/status/ || exit 1
