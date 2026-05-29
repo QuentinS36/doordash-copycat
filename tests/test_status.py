@@ -1,3 +1,6 @@
-def test_status_endpoint_ok(client):
-    response = client.get("/status/")
+import httpx
+
+def test_health():
+    response = httpx.get("http://localhost:8080/status")
     assert response.status_code == 200
+    assert response.json() == {"status": "ok"}
