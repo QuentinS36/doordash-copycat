@@ -1,0 +1,31 @@
+name: DoorDash_part1
+
+on:
+  push:
+    branches: 
+     - "main"
+    paths:
+      -app
+  workflow_dispatch:
+
+jobs:
+  build-and-smoke-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout_repository
+        uses: actions/checkout@v6
+
+      - name: build_docker_image
+        run: |
+          docker build -t doordash-fee-service .
+
+      - name: run_docker
+        run: |
+          docker run -d --name doordash-container doordash-fee-service
+
+      - name: stop_container
+        if: always()
+        run: |
+          docker stop doordash-container
+          docker rm doordash-container
